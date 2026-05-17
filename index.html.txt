@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Глаз-диаграмма с ползунками</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>👁 Глаз-диаграмма</h1>
+        <canvas id="eyeCanvas" width="400" height="400"></canvas>
+
+        <div class="controls">
+            <label>Размер зрачка:
+                <input type="range" id="pupilSize" min="10" max="100" value="50">
+            </label>
+            <label>Радиус радужки:
+                <input type="range" id="irisSize" min="60" max="150" value="110">
+            </label>
+            <label>Цвет радужки:
+                <input type="range" id="irisHue" min="0" max="360" value="200">
+            </label>
+            <label>Блик (яркость):
+                <input type="range" id="brightness" min="0" max="100" value="80">
+            </label>
+        </div>
+        <p>Попробуй подвигать ползунки — глаз меняется!</p>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

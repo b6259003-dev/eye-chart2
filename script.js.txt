@@ -1,0 +1,84 @@
+const canvas = document.getElementById('eyeCanvas');
+const ctx = canvas.getContext('2d');
+
+ Ползунки
+const pupilSlider = document.getElementById('pupilSize');
+const irisSlider = document.getElementById('irisSize');
+const hueSlider = document.getElementById('irisHue');
+const brightSlider = document.getElementById('brightness');
+
+function drawEye() {
+    ctx.clearRect(0, 0, 400, 400);
+    
+     читаем значения
+    let pupilR = parseInt(pupilSlider.value);
+    let irisR = parseInt(irisSlider.value);
+    let hue = parseInt(hueSlider.value);
+    let bright = parseInt(brightSlider.value)  100;   0..1
+    
+     центр глаза (200,200)
+    const centerX = 200, centerY = 200;
+    
+     1. Белок (склера) – большой круг
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, 170, 0, Math.PI  2);
+    ctx.fillStyle = '#f0f0f0';
+    ctx.fill();
+    ctx.strokeStyle = '#aaa';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    
+     2. Радужка (цвет меняется от ползунка)
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, irisR, 0, Math.PI  2);
+    ctx.fillStyle = `hsl(${hue}, 80%, 45%)`;
+    ctx.fill();
+     тень для объёма
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, irisR, 0, Math.PI  2);
+    ctx.fillStyle = `rgba(0,0,0,0.2)`;
+    ctx.fill();
+    
+     3. Зрачок (разный размер)
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, pupilR, 0, Math.PI  2);
+    ctx.fillStyle = `rgb(10, 10, 20)`;
+    ctx.fill();
+    
+     4. Блики (яркость управляет количествомразмером бликов)
+    ctx.beginPath();
+    ctx.arc(centerX - 25, centerY - 20, 12 + bright  10, 0, Math.PI  2);
+    ctx.fillStyle = `rgba(255, 255, 255, ${0.5 + bright  0.5})`;
+    ctx.fill();
+    
+    ctx.beginPath();
+    ctx.arc(centerX + 15, centerY + 15, 7 + bright  6, 0, Math.PI  2);
+    ctx.fillStyle = `rgba(255, 255, 240, ${0.4 + bright  0.4})`;
+    ctx.fill();
+    
+     5. Добавим радиальную диаграмму (направления) – маленькие «лепестки» вокруг глаза
+     Это превращает простой глаз в глаз-диаграмму (как радар)
+    const numSpokes = 12;
+    for (let i = 0; i  numSpokes; i++) {
+        let angle = (i  numSpokes)  Math.PI  2;
+        let x1 = centerX + Math.cos(angle)  (irisR + 5);
+        let y1 = centerY + Math.sin(angle)  (irisR + 5);
+        let x2 = centerX + Math.cos(angle)  (irisR + 18);
+        let y2 = centerY + Math.sin(angle)  (irisR + 18);
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = `hsl(${hue + 40}, 70%, 60%)`;
+        ctx.stroke();
+    }
+}
+
+ Перерисовывать при любом изменении ползунка
+pupilSlider.addEventListener('input', drawEye);
+irisSlider.addEventListener('input', drawEye);
+hueSlider.addEventListener('input', drawEye);
+brightSlider.addEventListener('input', drawEye);
+
+ Первый рисунок
+drawEye();
